@@ -1,7 +1,7 @@
 import {
 	getRandomCocktails,
     getCocktailById
-} from '../controllers/cocktailController';
+} from '../controllers/dbController.js';
 import express from 'express';
 import { authRequest } from '../middleware/authMiddleware.js';
 
