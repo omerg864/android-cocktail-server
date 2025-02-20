@@ -1,0 +1,19 @@
+meta {
+  name: get cocktail by id
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://localhost:3000/api/db/:id
+  body: none
+  auth: bearer
+}
+
+params:path {
+  id: 178330
+}
+
+auth:bearer {
+  token: 29865248
+}

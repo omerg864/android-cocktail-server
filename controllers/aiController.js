@@ -1,10 +1,11 @@
 import asyncHandler from 'express-async-handler';
 import { GoogleGenerativeAI, SchemaType } from '@google/generative-ai';
-import { DIFFICULTY_OPTIONS, LANGUAGE_OPTIONS } from '../utils/constants';
+import { DIFFICULTY_OPTIONS, LANGUAGE_OPTIONS } from '../utils/constants.js';
 
-export const createWithAI = asyncHandler(async (req, res, next) => {
+export const generateCocktail = asyncHandler(async (req, res, next) => {
 	const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-	const { language, difficulty, ingredients } = req.body;
+	const { language, difficulty } = req.body;
+	let { ingredients } = req.body;
 
 	ingredients = ingredients || '';
 
@@ -46,15 +47,15 @@ export const createWithAI = asyncHandler(async (req, res, next) => {
 	const result = await model.generateContent(prompt);
 	const resultJSON = JSON.parse(result.response.text());
 
-	if (!resultJSON.title) {
-        res.status(400);
-        throw new Error('Please try again');
-    }
-
-    if (!resultJSON.description || !resultJSON.ingredients || !resultJSON.instructions || !resultJSON.name) {
-        res.status(400);
-        throw new Error('Please try again');
-    }
+	if (
+		!resultJSON.description ||
+		!resultJSON.ingredients ||
+		!resultJSON.instructions ||
+		!resultJSON.name
+	) {
+		res.status(400);
+		throw new Error('Please try again');
+	}
 
 	res.status(200).json({
 		success: true,

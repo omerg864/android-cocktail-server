@@ -2,15 +2,17 @@ import asyncHandler from 'express-async-handler';
 import axios from 'axios';
 
 const transformCocktail = (cocktail) => {
-	const ingredients = ""
+	let ingredients = ""
 	for (let i = 1; i <= 15; i++) {
-		if (cocktail[`strIngredient${i}`]) {
+		if (cocktail[`strIngredient${i}`] && cocktail[`strMeasure${i}`]) {
 			ingredients += `${cocktail[`strIngredient${i}`]}: ${cocktail[`strMeasure${i}`]}\n`;
+		} else if (cocktail[`strIngredient${i}`]) {
+			ingredients += `${cocktail[`strIngredient${i}`]}\n`;
 		}
 	}
 	return {
 		name: cocktail.strDrink,
-		_id: cocktail.idDrink,
+		id: cocktail.idDrink,
 		image: cocktail.strDrinkThumb,
 		instructions: cocktail.strInstructions,
 		ingredients,
@@ -29,8 +31,9 @@ const getRandomCocktails = asyncHandler(async (req, res) => {
 			cocktails,
 		});
 	} catch (error) {
+		console.log(error);
 		res.json({
-			success: true,
+			success: false,
 			cocktails: [],
 		});
 	}

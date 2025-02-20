@@ -1,0 +1,23 @@
+meta {
+  name: ai cocktail
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:3000/api/ai
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: 29865248
+}
+
+body:json {
+  {
+    "language": "English",
+    "difficulty": "easy",
+    "ingredients": "gin"
+  }
+}
